@@ -16,8 +16,6 @@ import java.io.FileWriter;
 
 public class ContinueTesting {
     ChromeDriver chromeDriver;
-    Integer isPassed = 0;
-
     @BeforeMethod
     public void SetUp() {
         // Khởi tạo trình duyệt
@@ -31,7 +29,7 @@ public class ContinueTesting {
     public void logIn () throws Exception {
         chromeDriver.manage().window().maximize();
         chromeDriver.get("http://localhost/orangehrm-4.5/symfony/web/index.php/admin/saveSystemUser");
-        CSVReader reader = new CSVReader(new FileReader("C://Users//admin//IdeaProjects//ExcelTesting//src//test//resources//Book1.csv"));
+        CSVReader reader = new CSVReader(new FileReader("C://Users//admin//IdeaProjects//ExcelTesting//src//test//resources//dataLogin.csv"));
         String csvCell[];
         while ((csvCell = reader.readNext()) != null)
         {
@@ -51,13 +49,18 @@ public class ContinueTesting {
         chromeDriver.manage().window().maximize();
         chromeDriver.get("http://localhost/orangehrm-4.5/symfony/web/index.php/admin/saveSystemUser");
         logIn();
-        CSVReader reader = new CSVReader(new FileReader("C://Users//admin//IdeaProjects//ExcelTesting//src//test//resources//Book3.csv"));
+        CSVReader reader = new CSVReader(new FileReader("C://Users//admin//IdeaProjects//ExcelTesting//src//test//resources//data.csv"));
         String csvCell[];
         CSVWriter writer = new CSVWriter(new FileWriter("C://Users//admin//IdeaProjects//ExcelTesting//src//test//resources//result.csv"));
         String[] header = { "Employee Name", "Username", "Password","Confirm Password","Expected Output","Actual Output","Status"};
         writer.writeNext(header);
+        boolean check = true;
         while ((csvCell = reader.readNext()) != null)
         {
+            if(check){
+                check=false;
+                continue;
+            }
             String EmployeeName = csvCell[0];
             String UserName = csvCell[1];
             String Pass = csvCell[2];
@@ -78,20 +81,29 @@ public class ContinueTesting {
             chromeDriver.findElement(By.xpath("//*[@id=\"btnSave\"]")).click();
             Thread.sleep(5000);
 
-            // add data to csv
-            writer.writeNext(csvCell);
 
             String EmployeeNameMessage=chromeDriver.findElement(By.xpath("//*[@id=\"frmSystemUser\"]/fieldset/ol/li[2]/span")).getText();
             String UsernameMessage=chromeDriver.findElement(By.xpath("//*[@id=\"frmSystemUser\"]/fieldset/ol/li[3]/span")).getText();
             String PasswordMessage=chromeDriver.findElement(By.xpath("//*[@id=\"frmSystemUser\"]/fieldset/ol/li[6]/span")).getText();
             String ConfirmPassword= chromeDriver.findElement(By.xpath("//*[@id=\"frmSystemUser\"]/fieldset/ol/li[7]/span")).getText();
             //WebElement notice6 = chromeDriver.findElement(By.xpath("//*[@id=\"frmSystemUser\"]/fieldset/ol/li[6]/span"));
-            System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-//            if(!EmployeeNameMessage.isEmpty()){
-//                csvCell[]
-//                if(EmployeeNameMessage.equals(Message))
-//            }
 
+            if(!EmployeeNameMessage.isEmpty()){
+                csvCell[5] = EmployeeNameMessage;
+            } else if (!UsernameMessage.isEmpty()) {
+                csvCell[5] = UsernameMessage;
+            } else if (!PasswordMessage.isEmpty()) {
+                csvCell[5] = PasswordMessage;
+            } else if (!ConfirmPassword.isEmpty()) {
+                csvCell[5] = ConfirmPassword;
+            }
+            if(Message.equals(csvCell[4])){
+                csvCell[6]="PASS";
+            }
+            else{
+                csvCell[6]="FAIL";
+            }
+            writer.writeNext(csvCell);
             writer.close();
             Thread.sleep(5000);
 
@@ -104,11 +116,9 @@ public class ContinueTesting {
         }
     }
 
-
-
     @AfterMethod
     public void CleanUp() {
-        System.out.println("After Method");
+        chromeDriver.quit();
     }
 
 }
