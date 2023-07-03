@@ -52,7 +52,7 @@ public class ContinueTesting {
         CSVReader reader = new CSVReader(new FileReader("C://Users//admin//IdeaProjects//ExcelTesting//src//test//resources//data.csv"));
         String csvCell[];
         CSVWriter writer = new CSVWriter(new FileWriter("C://Users//admin//IdeaProjects//ExcelTesting//src//test//resources//result.csv"));
-        String[] header = { "Employee Name", "Username", "Password","Confirm Password","Expected Output","Actual Output","Status"};
+        String[] header = {"User Role", "Employee Name", "Username","Status", "Password","Confirm Password","Expected Output","Actual Output","Status Of Test Case"};
         writer.writeNext(header);
         boolean check = true;
         while ((csvCell = reader.readNext()) != null)
@@ -61,21 +61,22 @@ public class ContinueTesting {
                 check=false;
                 continue;
             }
-            String EmployeeName = csvCell[0];
-            String UserName = csvCell[1];
-            String Pass = csvCell[2];
-            String ConPass = csvCell[3];
-            String Message = csvCell[4];
+            String Role = csvCell[0];
+            String EmployeeName = csvCell[1];
+            String UserName = csvCell[2];
+            String UserStatus = csvCell[3];
+            String Pass = csvCell[4];
+            String ConPass = csvCell[5];
+            String Message = csvCell[6];
 
             WebElement UserRole = chromeDriver.findElement(By.xpath("//*[@id=\"systemUser_userType\"]"));
             Select select = new Select(UserRole);
-            select.selectByVisibleText("ESS");
-
+            select.selectByVisibleText(Role);
             chromeDriver.findElement(By.xpath("//*[@id=\"systemUser_employeeName_empName\"]")).sendKeys(EmployeeName);
             chromeDriver.findElement(By.xpath("//*[@id=\"systemUser_userName\"]")).sendKeys(UserName);
             WebElement Status = chromeDriver.findElement(By.xpath("//*[@id=\"systemUser_status\"]"));
             Select select1 = new Select(Status);
-            select1.selectByVisibleText("Enabled");
+            select1.selectByVisibleText(UserStatus);
             chromeDriver.findElement(By.xpath("//*[@id=\"systemUser_password\"]")).sendKeys(Pass);
             chromeDriver.findElement(By.xpath("//*[@id=\"systemUser_confirmPassword\"]")).sendKeys(ConPass);
             chromeDriver.findElement(By.xpath("//*[@id=\"btnSave\"]")).click();
@@ -86,38 +87,43 @@ public class ContinueTesting {
             String UsernameMessage=chromeDriver.findElement(By.xpath("//*[@id=\"frmSystemUser\"]/fieldset/ol/li[3]/span")).getText();
             String PasswordMessage=chromeDriver.findElement(By.xpath("//*[@id=\"frmSystemUser\"]/fieldset/ol/li[6]/span")).getText();
             String ConfirmPassword= chromeDriver.findElement(By.xpath("//*[@id=\"frmSystemUser\"]/fieldset/ol/li[7]/span")).getText();
-            //WebElement notice6 = chromeDriver.findElement(By.xpath("//*[@id=\"frmSystemUser\"]/fieldset/ol/li[6]/span"));
 
             if(!EmployeeNameMessage.isEmpty()){
-                csvCell[5] = EmployeeNameMessage;
+                csvCell[7] = EmployeeNameMessage;
             } else if (!UsernameMessage.isEmpty()) {
-                csvCell[5] = UsernameMessage;
+                csvCell[7] = UsernameMessage;
             } else if (!PasswordMessage.isEmpty()) {
-                csvCell[5] = PasswordMessage;
+                csvCell[7] = PasswordMessage;
             } else if (!ConfirmPassword.isEmpty()) {
-                csvCell[5] = ConfirmPassword;
+                csvCell[7] = ConfirmPassword;
             }
-            if(Message.equals(csvCell[4])){
-                csvCell[6]="PASS";
+            if(Message.equals(csvCell[7])){
+                csvCell[8]="PASS";
             }
             else{
-                csvCell[6]="FAIL";
+                csvCell[8]="FAIL";
             }
+            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAA");
             writer.writeNext(csvCell);
-            writer.close();
+
             Thread.sleep(5000);
 
-//
-//            chromeDriver.findElement(By.xpath("//*[@id=\"systemUser_employeeName_empName\"]")).clear();
-//            chromeDriver.findElement(By.xpath("//*[@id=\"systemUser_userName\"]")).clear();
-//            chromeDriver.findElement(By.xpath("//*[@id=\"systemUser_password\"]")).clear();
-//            chromeDriver.findElement(By.xpath("//*[@id=\"systemUser_confirmPassword\"]")).clear();
+            chromeDriver.findElement(By.xpath("//*[@id=\"systemUser_employeeName_empName\"]")).clear();
+            chromeDriver.findElement(By.xpath("//*[@id=\"systemUser_userName\"]")).clear();
+            chromeDriver.findElement(By.xpath("//*[@id=\"systemUser_password\"]")).clear();
+            chromeDriver.findElement(By.xpath("//*[@id=\"systemUser_confirmPassword\"]")).clear();
+            EmployeeNameMessage="";
+            UsernameMessage="";
+            PasswordMessage="";
+            ConfirmPassword="";
 
         }
+        writer.close();
     }
 
     @AfterMethod
     public void CleanUp() {
+
         chromeDriver.quit();
     }
 
