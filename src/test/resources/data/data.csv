@@ -1,0 +1,21 @@
+Num.,User Role,Employee Name,Username,Status,Password,Confirm Password,Expected Output,Actual Output,Status Of Test Case
+TC#1,ESS,Vy Nguyen Lan Le,LeeVyVT72@@4119,Enabled,Vylee@4120,Vylee@4120,Successfully Saved,,
+TC#2,ESS,Le Ha,HaLee78,Enabled,Halele@112,Halele@112,Already exists,,
+TC#3,ESS,,Vylee4120,Enabled,Vylee@4119,Vylee@4119,Required,,
+TC#4,ESS,Thy Huynh Le,ThyLee1509,Enabled,Thyle@1509,Thyle@1509,Employee does not exist,,
+TC#5,ESS,Vy Nguyen Lan Le,Vy12,Enabled,Vylee@4119,Vylee@4119,Should have at least 5 characters,,
+TC#6,ESS,Vy Nguyen Lan Le,,Enabled,Vylee@4119,Vylee@4119,Required,,
+TC#7,ESS,Vy Nguyen Lan Le,Vylee4120,Enabled,,Vylee@4119,Required,,
+TC#8,ESS,Vy Nguyen Lan Le,Vylee4120,Enabled,Vyle@2,Vyle@2,Should have at least 8 characters,,
+TC#9,ESS,Vy Nguyen Lan Le,Vylee4120,Enabled,Vylee4119,Vylee4119,"Your password must contain a lower-case letter, an upper-case letter, a digit and a special character. Try a different password.",,
+TC#10,ESS,Vy Nguyen Lan Le,Vylee4120,Enabled,Vylee@khtn,Vylee@khtn,"Your password must contain a lower-case letter, an upper-case letter, a digit and a special character. Try a different password.",,
+TC#11,ESS,Vy Nguyen Lan Le,Vylee4120,Enabled,vylee@4119,vylee@4119,"Your password must contain a lower-case letter, an upper-case letter, a digit and a special character. Try a different password.",,
+TC#12,ESS,Vy Nguyen Lan Le,Vylee4120,Enabled,VYLEE@4119,VYLEE@4119,"Your password must contain a lower-case letter, an upper-case letter, a digit and a special character. Try a different password.",,
+TC#13,ESS,Vy Nguyen Lan Le,Vylee4120,Enabled,"Contrary@13to popular belief, Lorem!*$Ipsum 
+is not simply random text. It has roots in ","Contrary@13to popular belief, Lorem!*$Ipsum 
+is not simply random text. It has roots in ",Should be less than 64 characters,,
+TC#14,ESS,Vy Nguyen Lan Le,Vylee4120,Enabled,Vylee@4119,Vylee@4119111,Passwords do not match,,
+TC#15,ESS,Vy Nguyen Lan Le,Vylee4120,Enabled,Vylee@4119,,Required,,
+TC#16,ESS,Vy Nguyen Lan Le,Vylee4120,Enabled,Vylee@4119,Vyle@2,Please enter at least 8 characters.,,
+TC#17,ESS,"Contrary@13to popular belief, Lorem!*$Ipsum 
+is not simply random text. It has roots in ",Vylee4120,Enabled,Vylee@4119,Vylee@4119,Should be less than 40 characters,,
