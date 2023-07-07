@@ -1,0 +1,3 @@
+"User Role","Employee Name","Username","Status","Password","Confirm Password","Expected Output","Actual Output","Status Of Test Case"
+"ESS","Le Ha","HaLee78","Enabled","Halele@112","Halele@112","Already exists","Already exists","PASS"
+"ESS","Hoang Le","HoangLee189","Enabled","Hoang@1989","Hoang@1989","Password not correct","Employee does not exist","FAIL"

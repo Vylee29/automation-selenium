@@ -13,6 +13,7 @@ import com.opencsv.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.List;
 
 
 public class AddJobTItle {
@@ -67,22 +68,57 @@ public class AddJobTItle {
             String Description = csvCell[3];
             String Specification = csvCell[4];
             String Note = csvCell[5];
-            String Message = csvCell[6];
+            String MessageError = csvCell[6];
 
+//            Diền vào các trường
             chromeDriver.findElement(By.xpath("//*[@id=\"jobTitle_jobTitle\"]")).sendKeys(JobTitle);
             chromeDriver.findElement(By.xpath("//*[@id=\"jobTitle_jobDescription\"]")).sendKeys(Description);
             if(!Specification.equals("")) {
                 chromeDriver.findElement(By.xpath("//*[@id=\"jobTitle_jobSpec\"]")).sendKeys(Specification);
-            }chromeDriver.findElement(By.xpath("//*[@id=\"btnSave\"]")).sendKeys(Note);
+            }
+            chromeDriver.findElement(By.xpath("//*[@id=\"jobTitle_note\"]")).sendKeys(Note);
+            chromeDriver.findElement(By.xpath("//*[@id=\"btnSave\"]")).click();
 
-         chromeDriver.findElement(By.xpath("//*[@id=\"btnSave\"]")).click();
-            System.out.println("asssssssdasfds");
 
-            String hhh=chromeDriver.findElement(By.xpath("//*[@id=\"frmList_ohrmListComponent\"]/div[2]")).getText();
-            System.out.println(hhh);
-            System.out.println("asssssssdasfds");
+
+            List<WebElement> elements = chromeDriver.findElements(By.xpath("//*[@id=\"frmList_ohrmListComponent\"]/div[2]"));
+            if (!elements.isEmpty()) {
+                // Phần tử tồn tại
+                WebElement success = elements.get(0);
+                csvCell[7]=success.getText();
+                Thread.sleep(600);
+                chromeDriver.findElement(By.xpath("//*[@id=\"btnAdd\"]")).click();
+            } else {
+                String checkJobTitle="";
+                String checkNote="";
+                String checkJobDescription= "";
+                List<WebElement> checkEmptyJob = chromeDriver.findElements(By.xpath("//*[@id=\"frmSavejobTitle\"]/fieldset/ol/li[1]/span"));
+                if(!checkEmptyJob.isEmpty())
+                 checkJobTitle= checkEmptyJob.get(0).getText();
+                List<WebElement> checkEmptyNote = chromeDriver.findElements(By.xpath("//*[@id=\"frmSavejobTitle\"]/fieldset/ol/li[4]/span"));
+                if(!checkEmptyNote.isEmpty()){
+                    checkNote=checkEmptyNote.get(0).getText();
+                }
+//                String checkNote= chromeDriver.findElement(By.xpath("//*[@id=\"frmSavejobTitle\"]/fieldset/ol/li[4]/span")).getText();
+                if(!checkJobTitle.equals("")){
+                    csvCell[7]= checkJobTitle;
+                }else if(!checkJobDescription.equals("")){
+                    csvCell[7]= checkJobTitle;
+                } else if (!checkNote.equals("")) {
+                    csvCell[7]= checkNote;
+                }
+                chromeDriver.findElement(By.xpath("//*[@id=\"jobTitle_jobTitle\"]")).clear();
+                chromeDriver.findElement(By.xpath("//*[@id=\"jobTitle_jobDescription\"]")).clear();
+                chromeDriver.findElement(By.xpath("//*[@id=\"jobTitle_jobSpec\"]")).clear();
+                chromeDriver.findElement(By.xpath("//*[@id=\"jobTitle_note\"]")).clear();
+            }
             Thread.sleep(1000);
-
+            if(MessageError.equals(csvCell[7])){
+                csvCell[8]="PASS";
+            }
+            else{
+                csvCell[8]="FAIL";
+            }
             // add data to csv
             writer.writeNext(csvCell);
 
@@ -94,10 +130,7 @@ public class AddJobTItle {
 //            }
 
             Thread.sleep(1000);
-            chromeDriver.findElement(By.xpath("//*[@id=\"jobTitle_jobTitle\"]")).clear();
-            chromeDriver.findElement(By.xpath("//*[@id=\"jobTitle_jobDescription\"]")).clear();
-            chromeDriver.findElement(By.xpath("//*[@id=\"jobTitle_jobSpec\"]")).clear();
-            chromeDriver.findElement(By.xpath("//*[@id=\"jobTitle_note\"]")).clear();
+
 
         }
         writer.close();
