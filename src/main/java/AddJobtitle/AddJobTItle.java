@@ -33,7 +33,7 @@ public class AddJobTItle {
     public void logIn () throws Exception {
         chromeDriver.manage().window().maximize();
         chromeDriver.get("http://localhost/orangehrm-4.5/symfony/web/index.php/admin/saveJobTitle");
-        CSVReader reader = new CSVReader(new FileReader("D://CNTT//kiemthuphanmem//automation-selenium//src//test//resources//Book1.csv"));
+        CSVReader reader = new CSVReader(new FileReader("src/test/resources/data/dataLogin.csv"));
         String csvCell[];
         while ((csvCell = reader.readNext()) != null)
         {
@@ -53,9 +53,9 @@ public class AddJobTItle {
         chromeDriver.manage().window().maximize();
         chromeDriver.get("http://localhost/orangehrm-4.5/symfony/web/index.php/admin/saveJobTitle");
         logIn();
-        CSVReader reader = new CSVReader(new FileReader("D://CNTT//kiemthuphanmem//automation-selenium//src//test//resources//addjobtitle.csv"));
+        CSVReader reader = new CSVReader(new FileReader("src/test/resources/data/addjobtitle.csv"));
         String csvCell[];
-        CSVWriter writer = new CSVWriter(new FileWriter("D://CNTT//kiemthuphanmem//automation-selenium//src//test//resources//result//addJobtitleResult.csv"));
+        CSVWriter writer = new CSVWriter(new FileWriter("src/test/resources/result/addJobtitleResult.csv"));
         boolean check =true;
         while ((csvCell = reader.readNext()) != null)
         {
